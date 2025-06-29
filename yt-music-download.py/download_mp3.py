@@ -1,5 +1,6 @@
 import argparse
 from typing import Optional
+from ytdlp_utils import *
 
 
 def download_mp3(
@@ -9,6 +10,12 @@ def download_mp3(
     Main entry point.
     """
     print(f"{youtube_url=} {artist=} {album=} {year=} {single=}")
+
+    # first, fetch info about whatever we passed in
+    # should see if we can actually perform the download or not...
+    # should see if we have a playlist or not...
+
+    get_titles(youtube_url=youtube_url)
 
 
 if __name__ == "__main__":
