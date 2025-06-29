@@ -1,6 +1,46 @@
+# https://ytmusicapi.readthedocs.io/en/latest/
+
 import argparse
-from typing import Optional
-from ytdlp_utils import *
+from pathlib import Path
+from typing import Optional, List
+from ytdlp_utils import get_youtube_titles, download_to_mp3
+
+
+def init_music_dir(artist: str, album: str, year: int) -> Path:
+    """
+    Initializes a directory for the album or single if one does not exist.
+    Directory name is in the format '[ARTIST] - [ALBUM] ([YEAR])'.
+    Returns the path.
+    """
+
+    dir_name = f"{artist} - {album} ({year})"
+
+    music_dir_path = Path(dir_name)
+    if not music_dir_path.exists():
+        print(f"Creating new directory: '{music_dir_path}'")
+        music_dir_path.mkdir()
+
+    return music_dir_path
+
+
+def create_info_txt(music_dir_path: Path, youtube_url: str, tracks: List[str]) -> None:
+    """
+    Create TXT file with information about downloaded content.
+    """
+
+    info_txt_path = music_dir_path / Path("info.txt")
+    print(f"Creating new text file: '{info_txt_path}'")
+
+    info_file = open(info_txt_path, "w")
+
+    info_file.write(f"{music_dir_path.name}\n")
+    info_file.write(f"{youtube_url}\n")
+
+    info_file.write("\n" + "Tracks".center(20, "-") + "\n")
+    for index, item in enumerate(tracks):
+        info_file.write(f"{index+1:02d}".ljust(5) + f"{item}" + "\n")
+
+    info_file.close()
 
 
 def download_mp3(
@@ -9,13 +49,22 @@ def download_mp3(
     """
     Main entry point.
     """
+
     print(f"{youtube_url=} {artist=} {album=} {year=} {single=}")
 
-    # first, fetch info about whatever we passed in
-    # should see if we can actually perform the download or not...
-    # should see if we have a playlist or not...
+    tracks = get_youtube_titles(youtube_url=youtube_url)
+    if tracks is None:
+        return
 
-    get_titles(youtube_url=youtube_url)
+    music_dir_path = init_music_dir(artist=artist, album=album, year=year)
+
+    create_info_txt(
+        music_dir_path=music_dir_path, youtube_url=youtube_url, tracks=tracks
+    )
+
+    download_to_mp3(youtube_url=youtube_url, download_dir=music_dir_path)
+
+    # apply tags
 
 
 if __name__ == "__main__":

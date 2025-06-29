@@ -3,11 +3,12 @@ Utils for yt_dlp...
 """
 
 from typing import List
+from pathlib import Path
 import yt_dlp
 
 
-def get_titles(youtube_url: str) -> List[str] | None:
-    """Get titles from a YouTube playlist or video
+def get_youtube_titles(youtube_url: str) -> List[str] | None:
+    """Get titles from a YouTube playlist or video.
 
     Args:
         youtube_url (str): URL of YouTube playlist or video.
@@ -37,7 +38,7 @@ def get_titles(youtube_url: str) -> List[str] | None:
         try:
             match info["webpage_url_basename"]:
                 case "playlist":
-                    print("Playlist Tracks".center(100, "-"))
+                    print("Playlist".center(100, "-"))
                     entries = info["entries"]
                     for index, item in enumerate(entries):
                         print(
@@ -50,7 +51,7 @@ def get_titles(youtube_url: str) -> List[str] | None:
                     return titles
 
                 case "watch":
-                    print("Single Track".center(100, "-"))
+                    print("Video".center(100, "-"))
                     print(f"{info['title']}".ljust(50) + f"{info['channel']}")
 
                     titles = [info["title"]]
@@ -60,3 +61,27 @@ def get_titles(youtube_url: str) -> List[str] | None:
             raise KeyError(f"Error: Issue encountered while parsing info. {e}") from e
 
         return None
+
+
+def download_to_mp3(youtube_url: str, download_dir: Path) -> None:
+    """
+    Download YouTube playlist or video as MP3.
+    """
+
+    options = {
+        "format": "bestaudio/best",
+        "outtmpl": f"{download_dir}/%(title)s.%(ext)s",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "192",
+            }
+        ],
+        "noplaylist": False,
+        "ignoreerrors": True,
+        # "cookies": "cookies.txt",
+    }
+
+    with yt_dlp.YoutubeDL(options) as ydl:
+        ydl.download([youtube_url])
