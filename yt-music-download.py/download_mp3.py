@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 from typing import Optional, List
 from ytdlp_utils import get_youtube_titles, download_to_mp3
+from tag_utils import TrackInfo, set_mp3_tags
 
 
 def init_music_dir(artist: str, album: str, year: int) -> Path:
@@ -43,6 +44,33 @@ def create_info_txt(music_dir_path: Path, youtube_url: str, tracks: List[str]) -
     info_file.close()
 
 
+def set_track_tags(
+    music_dir_path: Path, tracks: List[str], artist: str, album: str, year: int
+) -> None:
+    """
+    Set tags for all tracks in a directory.
+    """
+    for index, item in enumerate(tracks):
+        track_number = index + 1
+        track_title = item
+
+        # build path for track
+        track_path = music_dir_path / Path(f"{track_title}.mp3")
+
+        # set tag if file exists
+        if track_path.exists():
+            track_info: TrackInfo = {
+                "title": track_title,
+                "track_number": track_number,
+                "artist": artist,
+                "album": album,
+                "year": year,
+            }
+            set_mp3_tags(mp3_file=track_path, tags=track_info)
+        else:
+            print(f"Track {track_title} does not exist!")
+
+
 def download_mp3(
     youtube_url: str, artist: str, album: str, year: int, single: Optional[bool] = False
 ) -> None:
@@ -64,7 +92,13 @@ def download_mp3(
 
     download_to_mp3(youtube_url=youtube_url, download_dir=music_dir_path)
 
-    # apply tags
+    set_track_tags(
+        music_dir_path=music_dir_path,
+        tracks=tracks,
+        artist=artist,
+        album=album,
+        year=year,
+    )
 
 
 if __name__ == "__main__":
