@@ -62,3 +62,20 @@ def get_mp3_tags(mp3_file: Path) -> TrackInfo | None:
         "track_number": audio_file.tag.track_num[0],
     }
     return audio_track_info
+
+
+def set_mp3_art(mp3_file: Path, image_file: Path) -> None:
+    """
+    Set album art for an MP3 file.
+    """
+
+    audio_file = eyed3.load(mp3_file)
+    if not audio_file:
+        return
+
+    with open(image_file, "rb") as img_fp:
+        audio_file.tag.images.set(
+            eyed3.id3.frames.ImageFrame.FRONT_COVER, img_fp.read(), "image/jpeg"
+        )
+
+    audio_file.tag.save()
