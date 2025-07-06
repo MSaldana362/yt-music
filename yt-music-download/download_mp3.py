@@ -32,6 +32,7 @@ def create_info_txt(music_dir_path: Path, youtube_url: str, tracks: List[str]) -
     info_txt_path = music_dir_path / Path("info.txt")
     print(f"Creating new text file: '{info_txt_path}'")
 
+    # pylint: disable=unspecified-encoding
     info_file = open(info_txt_path, "w")
 
     info_file.write(f"{music_dir_path.name}\n")
