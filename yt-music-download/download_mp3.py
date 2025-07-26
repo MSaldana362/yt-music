@@ -1,4 +1,6 @@
-# https://ytmusicapi.readthedocs.io/en/latest/
+"""
+Download YouTube to MP3.
+"""
 
 import argparse
 from pathlib import Path

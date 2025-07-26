@@ -1,5 +1,5 @@
 """
-Utils for yt_dlp...
+Utils for yt_dlp.
 """
 
 from typing import List
