@@ -28,12 +28,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         artist = self.ui.lineEditArtist.text()
         if not artist:
-            print("Please enter a valid artist")
+            print("Please enter a valid artist name.")
             return
 
         album = self.ui.lineEditAlbum.text()
         if not album:
-            print("Please enter a valid album title.")
+            print("Please enter a valid album name.")
             return
 
         try:

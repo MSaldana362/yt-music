@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "YouTube Download to MP3"))
         self.lineEditArtist.setPlaceholderText(_translate("MainWindow", "Enter Artist Name"))
         self.lineEditAlbum.setPlaceholderText(_translate("MainWindow", "Enter Album Name"))
         self.lineEditYear.setPlaceholderText(_translate("MainWindow", "Enter Album Year"))
