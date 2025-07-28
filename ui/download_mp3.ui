@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEditArtist">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -30,7 +30,7 @@
      <string>Enter Artist Name</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEditAlbum">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -43,7 +43,7 @@
      <string>Enter Album Name</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="lineEditYear">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -56,7 +56,7 @@
      <string>Enter Album Year</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="lineEditUrl">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -69,7 +69,7 @@
      <string>Enter Video or Playlist URL</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="lineEditArtwork">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -82,7 +82,7 @@
      <string>(Optional) Enter Artwork URL</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButtonDownload">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -98,12 +98,12 @@
      <string>Ctrl+D</string>
     </property>
    </widget>
-   <zorder>lineEdit</zorder>
-   <zorder>lineEdit_2</zorder>
-   <zorder>lineEdit_3</zorder>
-   <zorder>lineEdit_5</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>lineEdit_4</zorder>
+   <zorder>lineEditArtist</zorder>
+   <zorder>lineEditAlbum</zorder>
+   <zorder>lineEditYear</zorder>
+   <zorder>lineEditArtwork</zorder>
+   <zorder>pushButtonDownload</zorder>
+   <zorder>lineEditUrl</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -118,12 +118,12 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
-  <tabstop>lineEdit_4</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>lineEditUrl</tabstop>
+  <tabstop>lineEditArtist</tabstop>
+  <tabstop>lineEditAlbum</tabstop>
+  <tabstop>lineEditYear</tabstop>
+  <tabstop>lineEditArtwork</tabstop>
+  <tabstop>pushButtonDownload</tabstop>
  </tabstops>
  <resources/>
  <connections/>
