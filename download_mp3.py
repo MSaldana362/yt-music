@@ -6,8 +6,8 @@ import argparse
 from pathlib import Path
 from typing import Optional, List
 import requests
-from ytdlp_utils import get_youtube_titles, download_to_mp3
-from tag_utils import TrackInfo, set_mp3_tags, set_mp3_art
+from utils.ytdlp_utils import get_youtube_titles, download_to_mp3
+from utils.tag_utils import TrackInfo, set_mp3_tags, set_mp3_art
 
 
 def init_music_dir(artist: str, album: str, year: int) -> Path:
