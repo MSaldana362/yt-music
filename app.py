@@ -54,7 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 year=year,
                 artwork_url=artwork_url,
             )
-            print("Download compleeted successfully. You may now close the window.")
+            print("Download completed successfully. You may now close the window.")
         except RuntimeError:
             print("Something went wrong when trying to download from YouTube.")
             return
