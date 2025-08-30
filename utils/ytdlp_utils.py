@@ -73,7 +73,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
                     print(f"{info['title']}".ljust(50) + f"{info['channel']}")
 
                     titles = [info["title"]]
-                    urls = [info["webpage_url"]]
+                    urls = [info["original_url"]]
 
                     video_info: YouTubeInfo = {
                         "titles": titles,
