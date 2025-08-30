@@ -72,7 +72,7 @@ def set_track_tags(
             }
             set_mp3_tags(mp3_file=track_path, tags=track_info)
         else:
-            print(f"File '{track_title}.mp3' does not exist!")
+            print(f"File '{track_title}.mp3' does not exist! Unable to set track tags.")
 
 
 def download_artwork(artwork_url: str, music_dir_path: Path, album: str) -> Path:
@@ -106,7 +106,7 @@ def set_artwork(music_dir_path: Path, tracks: List[str], artwork_path: Path) -> 
         if track_path.exists():
             set_mp3_art(track_path, artwork_path)
         else:
-            print(f"Track {track_title} does not exist!")
+            print(f"File '{track_title}.mp3' does not exist! Unable to set artwork.")
 
 
 def download_mp3(
