@@ -58,12 +58,22 @@ def get_mp3_tags(mp3_file: Path) -> TrackInfo | None:
     if not audio_file:
         return None
 
+    tag = audio_file.tag
+    if (
+        tag.title is None
+        or tag.artist is None
+        or tag.album is None
+        or tag.recording_date is None
+        or tag.track_num[0] is None
+    ):
+        return None
+
     audio_track_info: TrackInfo = {
-        "title": audio_file.tag.title,
-        "artist": audio_file.tag.artist,
-        "album": audio_file.tag.album,
-        "year": int(str(audio_file.tag.recording_date)),
-        "track_number": audio_file.tag.track_num[0],
+        "title": tag.title,
+        "artist": tag.artist,
+        "album": tag.album,
+        "year": int(str(tag.recording_date)),
+        "track_number": tag.track_num[0],
     }
     return audio_track_info
 
