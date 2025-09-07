@@ -3,6 +3,7 @@ Copy MP3 files in a sorted order.
 """
 
 import argparse
+import shutil
 from pathlib import Path
 from typing import List
 
@@ -37,28 +38,67 @@ def get_mp3_dirs(source_dir: Path) -> List[Path]:
         if file.is_dir() and is_mp3_dir(file):
             mp3_dirs.append(file)
 
-    print(f"Total MP3 directories found: {len(mp3_dirs)}")
+    print(f"Total MP3 Folders Found: {len(mp3_dirs)}")
 
     return sorted(mp3_dirs)
 
 
-def copy_dir_files(source_mp3_dir, target_mp3_dir) -> None:
+def copy_file(source_file: Path, target_file: Path) -> None:
     """
-    Copy all files from source to target.
+    Copy file. If it exists, touch it.
     """
-    print(f"{source_mp3_dir=}")
-    print(f"{target_mp3_dir=}")
 
-    # if dir exists, don't mkdir
-    # if file exists, touch it to update
+    if target_file.exists():
+        target_file.touch(exist_ok=True)
+        print(f"\t\tFile exists. Touched: {target_file.name}")
+    else:
+        shutil.copy2(source_file, target_file)
+        print(f"\t\tCopied: {target_file.name}")
+
+
+def copy_dir_files(source_mp3_dir: Path, target_mp3_dir: Path) -> None:
+    """
+    Copy all files from the source directory to the target directory.
+    Creates the target directory if it does not exist.
+    All files are sorted. MP3 files are copied first.
+    """
+
+    print(f"\tSource: {source_mp3_dir}")
+    print(f"\tTarget: {target_mp3_dir}")
+
+    if not target_mp3_dir.exists():
+        target_mp3_dir.mkdir(parents=True)
+        print(f"\t\tCreated Folder: {target_mp3_dir}")
+
+    mp3_files: List[Path] = []
+    other_files: List[Path] = []
+
+    source_dir_files = source_mp3_dir.rglob("*")
+    for source_file in source_dir_files:
+        if not source_file.is_file():
+            print(f"Not a file. Skipping: {source_file}")
+            continue
+
+        if source_file.suffix.lower() == ".mp3":
+            mp3_files.append(source_file)
+        else:
+            other_files.append(source_file)
+
+    sorted_mp3_files = sorted(mp3_files)
+    for source_file in sorted_mp3_files:
+        target_file = target_mp3_dir / source_file.name
+        copy_file(source_file=source_file, target_file=target_file)
+
+    sorted_other_files = sorted(other_files)
+    for source_file in sorted_other_files:
+        target_file = target_mp3_dir / source_file.name
+        copy_file(source_file=source_file, target_file=target_file)
 
 
 def copy_mp3_files(source_dir_str: str, target_dir_str: str) -> None:
     """
     Main entry point.
     """
-    print(f"{source_dir_str=}")
-    print(f"{target_dir_str=}")
 
     source_dir = Path(source_dir_str)
     target_dir = Path(target_dir_str)
