@@ -38,9 +38,13 @@ def get_mp3_dirs(source_dir: Path) -> List[Path]:
         if file.is_dir() and is_mp3_dir(file):
             mp3_dirs.append(file)
 
-    print(f"Total MP3 Folders Found: {len(mp3_dirs)}")
+    sorted_mp3_dirs = sorted(mp3_dirs)
 
-    return sorted(mp3_dirs)
+    print(f"Total MP3 Folders Found: {len(sorted_mp3_dirs)}")
+    for mp3_dir in sorted(sorted_mp3_dirs):
+        print(f"\tFolder: {mp3_dir.name}")
+
+    return sorted_mp3_dirs
 
 
 def copy_file(source_file: Path, target_file: Path) -> None:
