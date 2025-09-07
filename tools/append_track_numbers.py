@@ -67,7 +67,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Appends track numbers to the beginning of music track file names "
         "in a given directory. Music tracks must have metadata already set.",
-        usage="python -m tools.append_track_numbers.py [SOURCE_DIR]",
+        usage="python -m tools.append_track_numbers [SOURCE_DIR]",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("source_dir", type=str, help="Directory with music tracks.")
