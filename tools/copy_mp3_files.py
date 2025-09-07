@@ -3,7 +3,9 @@ Copy MP3 files in a sorted order.
 """
 
 import argparse
+import os
 import shutil
+import time
 from pathlib import Path
 from typing import List
 
@@ -53,7 +55,8 @@ def copy_file(source_file: Path, target_file: Path) -> None:
     """
 
     if target_file.exists():
-        target_file.touch(exist_ok=True)
+        timestamp = time.time()
+        os.utime(target_file, (timestamp, timestamp))
         print(f"\t\tFile exists. Touched: {target_file.name}")
     else:
         shutil.copy2(source_file, target_file)
@@ -63,16 +66,20 @@ def copy_file(source_file: Path, target_file: Path) -> None:
 def copy_dir_files(source_mp3_dir: Path, target_mp3_dir: Path) -> None:
     """
     Copy all files from the source directory to the target directory.
-    Creates the target directory if it does not exist.
+    Creates the target directory if it does not exist. Otherwise, touch it.
     All files are sorted. MP3 files are copied first.
     """
 
     print(f"\tSource: {source_mp3_dir}")
     print(f"\tTarget: {target_mp3_dir}")
 
-    if not target_mp3_dir.exists():
+    if target_mp3_dir.exists():
+        timestamp = time.time()
+        os.utime(target_mp3_dir, (timestamp, timestamp))
+        print(f"\t\tFolder Exists. Touched: {target_mp3_dir.name}")
+    else:
         target_mp3_dir.mkdir(parents=True)
-        print(f"\t\tCreated Folder: {target_mp3_dir}")
+        print(f"\t\tCreated Folder: {target_mp3_dir.name}")
 
     mp3_files: List[Path] = []
     other_files: List[Path] = []
