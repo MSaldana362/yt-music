@@ -4,6 +4,7 @@ Copy MP3 files in a sorted order.
 
 import argparse
 from pathlib import Path
+from typing import List
 
 
 def is_mp3_dir(user_dir: Path) -> bool:
@@ -24,6 +25,21 @@ def is_mp3_dir(user_dir: Path) -> bool:
     return False
 
 
+def get_mp3_dirs(source_dir: Path) -> List[Path]:
+    """
+    Return a list of paths to all MP3 directories.
+    """
+
+    mp3_dirs: List[Path] = []
+
+    source_dir_files = source_dir.rglob("*")
+    for file in source_dir_files:
+        if file.is_dir() and is_mp3_dir(file):
+            mp3_dirs.append(file)
+
+    return sorted(mp3_dirs)
+
+
 def copy_mp3_files(source_dir_str: str, target_dir_str: str) -> None:
     """
     Main entry point.
@@ -39,7 +55,8 @@ def copy_mp3_files(source_dir_str: str, target_dir_str: str) -> None:
             print(f"Not a valid directory: {user_path}")
             return
 
-    print(is_mp3_dir(source_dir))
+    mp3_dirs = get_mp3_dirs(source_dir=source_dir)
+    print(mp3_dirs)
 
 
 if __name__ == "__main__":
