@@ -37,7 +37,20 @@ def get_mp3_dirs(source_dir: Path) -> List[Path]:
         if file.is_dir() and is_mp3_dir(file):
             mp3_dirs.append(file)
 
+    print(f"Total MP3 directories found: {len(mp3_dirs)}")
+
     return sorted(mp3_dirs)
+
+
+def copy_dir_files(source_mp3_dir, target_mp3_dir) -> None:
+    """
+    Copy all files from source to target.
+    """
+    print(f"{source_mp3_dir=}")
+    print(f"{target_mp3_dir=}")
+
+    # if dir exists, don't mkdir
+    # if file exists, touch it to update
 
 
 def copy_mp3_files(source_dir_str: str, target_dir_str: str) -> None:
@@ -56,7 +69,15 @@ def copy_mp3_files(source_dir_str: str, target_dir_str: str) -> None:
             return
 
     mp3_dirs = get_mp3_dirs(source_dir=source_dir)
-    print(mp3_dirs)
+
+    total_mp3_dirs = len(mp3_dirs)
+    for index, mp3_dir in enumerate(mp3_dirs, start=1):
+        print(f"Copying {index} of {total_mp3_dirs}: {mp3_dir.name}")
+
+        relative_path = mp3_dir.relative_to(source_dir)
+        target_mp3_dir = target_dir / relative_path
+
+        copy_dir_files(source_mp3_dir=mp3_dir, target_mp3_dir=target_mp3_dir)
 
 
 if __name__ == "__main__":
