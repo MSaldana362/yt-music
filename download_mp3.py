@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 from typing import Optional, List
 import requests
-from utils.ytdlp_utils import get_youtube_titles, download_to_mp3
+from utils.ytdlp_utils import get_youtube_info, download_to_mp3
 from utils.tag_utils import TrackInfo, set_mp3_tags, set_mp3_art
 
 
@@ -120,9 +120,12 @@ def download_mp3(
     Main entry point.
     """
 
-    tracks = get_youtube_titles(youtube_url=youtube_url)
-    if tracks is None:
+    youtube_info = get_youtube_info(youtube_url=youtube_url)
+    if youtube_info is None:
         return
+
+    tracks = youtube_info["titles"]
+    urls = youtube_info["urls"]
 
     music_dir_path = init_music_dir(artist=artist, album=album, year=year)
 
@@ -130,24 +133,41 @@ def download_mp3(
         music_dir_path=music_dir_path, youtube_url=youtube_url, tracks=tracks
     )
 
-    download_to_mp3(youtube_url=youtube_url, download_dir=music_dir_path)
-
-    set_track_tags(
-        music_dir_path=music_dir_path,
-        tracks=tracks,
-        artist=artist,
-        album=album,
-        year=year,
-    )
-
+    artwork_path = None
     if artwork_url is not None:
         artwork_path = download_artwork(
             artwork_url=artwork_url, music_dir_path=music_dir_path, album=album
         )
 
-        set_artwork(
-            music_dir_path=music_dir_path, tracks=tracks, artwork_path=artwork_path
+    for index, url in enumerate(urls):
+        track_number = index + 1
+        track_title = tracks[index]
+
+        file_name = f"{track_number:02d} - {track_title}"
+
+        print(f"Downloading track: {track_title}")
+        download_to_mp3(
+            youtube_url=url, download_dir=music_dir_path, file_name=file_name
         )
+
+        track_path = music_dir_path / Path(f"{file_name}.mp3")
+
+        if track_path.exists():
+            print(f"Setting metadata for track: {track_title}.")
+
+            track_info: TrackInfo = {
+                "title": track_title,
+                "track_number": track_number,
+                "artist": artist,
+                "album": album,
+                "year": year,
+            }
+            set_mp3_tags(mp3_file=track_path, tags=track_info)
+
+            if artwork_path is not None:
+                set_mp3_art(mp3_file=track_path, image_file=artwork_path)
+        else:
+            print(f"File '{track_path}' does not exist! Unable to set tags.")
 
 
 if __name__ == "__main__":
