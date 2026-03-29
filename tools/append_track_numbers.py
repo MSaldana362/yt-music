@@ -5,7 +5,7 @@ Append Track Numbers.
 import argparse
 from pathlib import Path
 from typing import List
-from utils.tag_utils import get_mp3_tags, TrackInfo
+from yt_music.utils.tags import TrackInfo, get_mp3_tags
 
 
 def rename_mp3_file(file_path: Path, tags: TrackInfo) -> None:

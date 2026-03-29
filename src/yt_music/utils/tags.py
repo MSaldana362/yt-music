@@ -4,7 +4,7 @@ Utils for getting and setting music metadata.
 
 from typing import TypedDict
 from pathlib import Path
-import eyed3  # type: ignore
+import eyed3
 
 
 class TrackInfo(TypedDict):
