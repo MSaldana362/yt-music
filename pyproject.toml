@@ -1,24 +1,19 @@
 [project]
 name = "yt-music"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "MSaldana362",email = "msaldana362@gmail.com"}
-]
+description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10, <4.0"
-dependencies = [
-    "yt-dlp (>=2025.6.25,<2027.0.0)",
-    "eyed3 (>=0.9.8,<0.10.0)",
-    "pathlib (>=1.0.1,<2.0.0)",
-    "requests (>=2.32.4,<3.0.0)",
-    "pyqt5 (>=5.15.11,<6.0.0)"
+authors = [
+    { name = "MSaldana362", email = "msaldana362@gmail.com" }
 ]
-
+requires-python = ">=3.10"
+dependencies = [
+    "eyed3>=0.9.9",
+    "pyqt5>=5.15.11",
+    "requests>=2.33.0",
+    "yt-dlp>=2026.3.17",
+]
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
-package-mode = false
+requires = ["uv_build>=0.9.28,<0.10.0"]
+build-backend = "uv_build"

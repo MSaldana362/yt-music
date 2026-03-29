@@ -4,8 +4,8 @@ Main application.
 
 import sys
 from PyQt5 import QtWidgets
-from ui.download_mp3_ui import Ui_MainWindow
-from download_mp3 import download_mp3
+from download_mp3_ui import Ui_MainWindow
+from yt_music.download import download_mp3
 
 
 class MainWindow(QtWidgets.QMainWindow):
