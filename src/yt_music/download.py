@@ -17,9 +17,10 @@ def init_music_dir(artist: str, album: str, year: int) -> Path:
     Returns the path.
     """
 
+    download_dir = Path.home() / "Downloads"
     dir_name = f"{artist} - {album} ({year})"
 
-    music_dir_path = Path(dir_name)
+    music_dir_path = download_dir / dir_name
     if not music_dir_path.exists():
         print(f"Creating new directory: '{music_dir_path}'")
         music_dir_path.mkdir()
