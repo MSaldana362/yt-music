@@ -52,11 +52,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
                     print("Playlist".center(100, "-"))
                     entries = info["entries"]
                     for index, item in enumerate(entries):
-                        print(
-                            f"{index+1:02d}".ljust(5)
-                            + f"{item['title']}".ljust(50)
-                            + f"{item['channel']}"
-                        )
+                        print(f"{index+1:02d}".ljust(5) + f"{item['title']}".ljust(50))
 
                     titles = [entry["title"] for entry in entries]
                     urls = [entry["url"] for entry in entries]
@@ -70,7 +66,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
 
                 case "watch":
                     print("Video".center(100, "-"))
-                    print(f"{info['title']}".ljust(50) + f"{info['channel']}")
+                    print(f"{info['title']}")
 
                     titles = [info["title"]]
                     urls = [info["original_url"]]
