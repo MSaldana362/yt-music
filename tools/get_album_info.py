@@ -9,7 +9,11 @@ def print_as_json(info: dict):
 
 
 def get_track_info(url: str):
-    options = {"extract_flat": True, "playlistend": None}
+    options = {
+        "extract_flat": True,
+        "playlistend": None,
+        "js_runtimes": {"node": {}},
+    }
     with yt_dlp.YoutubeDL(options) as ydl:
         try:
             info = ydl.extract_info(url, download=False)
@@ -32,7 +36,11 @@ def get_track_info(url: str):
 
 def get_album_info(url: str):
 
-    options = {"extract_flat": True, "playlistend": None}
+    options = {
+        "extract_flat": True,
+        "playlistend": None,
+        "js_runtimes": {"node": {}},
+    }
     with yt_dlp.YoutubeDL(options) as ydl:
         try:
             info = ydl.extract_info(url, download=False)
