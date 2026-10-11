@@ -32,7 +32,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
     Returns:
         YouTubeInfo | None: YouTube info. Returns `None` if unsuccessful.
     """
-    options = {"extract_flat": True, "playlistend": None}
+    options = {"extract_flat": True, "playlistend": None, "js_runtimes": {"node": {}}}
 
     with yt_dlp.YoutubeDL(options) as ydl:
         # extract info from url
@@ -53,9 +53,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
                     entries = info["entries"]
                     for index, item in enumerate(entries):
                         print(
-                            f"{index+1:02d}".ljust(5)
-                            + f"{item['title']}".ljust(50)
-                            + f"{item['channel']}"
+                            f"{index + 1:02d}".ljust(5) + f"{item['title']}".ljust(50)
                         )
 
                     titles = [entry["title"] for entry in entries]
@@ -70,7 +68,7 @@ def get_youtube_info(youtube_url: str) -> YouTubeInfo | None:
 
                 case "watch":
                     print("Video".center(100, "-"))
-                    print(f"{info['title']}".ljust(50) + f"{info['channel']}")
+                    print(f"{info['title']}")
 
                     titles = [info["title"]]
                     urls = [info["original_url"]]
@@ -96,6 +94,7 @@ def download_to_mp3(youtube_url: str, download_dir: Path, file_name: str) -> Non
     options = {
         "format": "bestaudio/best",
         "outtmpl": f"{download_dir}/{file_name}.%(ext)s",
+        "js_runtimes": {"node": {}},
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
