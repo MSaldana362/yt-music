@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 import yt_dlp
 
@@ -30,6 +31,9 @@ class YouTubeUrl:
             dict[str, Any]: _description_
         """
 
+        if self._info is not None:
+            return self._info
+
         options = {
             **self.DEFAULT_OPTIONS,
             "quiet": quiet,
@@ -56,7 +60,7 @@ class YouTubeUrl:
         filename: str,
         noplaylist: bool = False,
         ignoreerrors: bool = True,
-    ) -> None:
+    ) -> bool:
         """
         Download a YouTube video as MP3.
 
@@ -85,6 +89,9 @@ class YouTubeUrl:
         with yt_dlp.YoutubeDL(options) as ydl:
             ydl.download([self.url])
 
+        outpath = Path(dirpath) / f"{filename}.mp3"
+        return outpath.exists()
+
     def download_to_mp4(
         self,
         dirpath: str,
@@ -92,7 +99,7 @@ class YouTubeUrl:
         height: int,
         noplaylist: bool = False,
         ignoreerrors: bool = True,
-    ) -> None:
+    ) -> bool:
         """
         Download a YouTube video as MP4.
 
@@ -115,3 +122,6 @@ class YouTubeUrl:
 
         with yt_dlp.YoutubeDL(options) as ydl:
             ydl.download([self.url])
+
+        outpath = Path(dirpath) / f"{filename}.mp4"
+        return outpath.exists()
