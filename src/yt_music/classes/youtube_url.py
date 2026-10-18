@@ -84,3 +84,34 @@ class YouTubeUrl:
 
         with yt_dlp.YoutubeDL(options) as ydl:
             ydl.download([self.url])
+
+    def download_to_mp4(
+        self,
+        dirpath: str,
+        filename: str,
+        height: int,
+        noplaylist: bool = False,
+        ignoreerrors: bool = True,
+    ) -> None:
+        """
+        Download a YouTube video as MP4.
+
+        Args:
+            dirpath (str): _description_
+            filename (str): _description_
+            height (int): _description_
+            noplaylist (bool, optional): _description_. Defaults to False.
+            ignoreerrors (bool, optional): _description_. Defaults to True.
+        """
+
+        options = {
+            **self.DEFAULT_OPTIONS,
+            "format": f"bestvideo[height<={height}]+bestaudio/best[height<={height}]",
+            "outtmpl": f"{dirpath}/{filename}.%(ext)s",
+            "merge_output_format": "mp4",
+            "noplaylist": noplaylist,
+            "ignoreerrors": ignoreerrors,
+        }
+
+        with yt_dlp.YoutubeDL(options) as ydl:
+            ydl.download([self.url])
