@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from pathlib import Path
 import eyed3
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -59,8 +62,9 @@ class Mp3File:
         if track_name is None or track_number is None:
             return
 
-        # todo: clean name
+        before = self.filepath.name
 
+        # todo: clean name
         expected = f"{track_number:02d} - {track_name}"
         if self.filepath.stem == expected:
             return
@@ -68,6 +72,10 @@ class Mp3File:
         newpath = self.filepath.rename(self.filepath.with_stem(expected))
         self.filepath = newpath.resolve()
         self.audiofile = self._load_audio_file()
+
+        after = self.filepath.name
+
+        logger.info("Renamed '%s' to '%s'", before, after)
 
     def set_tags(self, tags: Mp3Tags) -> None:
         """Set tags for MP3 file."""
