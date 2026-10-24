@@ -10,6 +10,23 @@ class AlbumUtils:
         raise TypeError("Utility class, cannot instantiate.")
 
     @staticmethod
+    def create_album_dir(
+        artist: str,
+        album: str,
+        year: int,
+    ) -> Path:
+        """Create album directory in Downloads."""
+
+        parent = Path.home() / "Downloads"
+
+        dirname = f"{artist} - {album} ({year})"
+        dirpath = parent / dirname
+        if not dirpath.exists():
+            dirpath.mkdir()
+
+        return dirpath
+
+    @staticmethod
     def create_info_txt(dirpath: str | Path, url: str, titles: list[str]) -> None:
         """Create info TXT file."""
 
