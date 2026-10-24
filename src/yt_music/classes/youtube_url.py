@@ -3,7 +3,7 @@ from typing import Any
 import logging
 import yt_dlp
 from pydantic import ValidationError
-from yt_music.models.youtube_info import YouTubePlaylistInfo
+from yt_music.models.youtube_info import YouTubeInfo, YouTubePlaylistInfo
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +58,18 @@ class YouTubeUrl:
             ) from e
 
         return self._info
+
+    def title(self) -> str:
+        """Title of playlist or video."""
+
+        try:
+            info = YouTubeInfo.model_validate(self._info)
+        except ValidationError as e:
+            raise ValueError(
+                f"YouTube video or playlist has no title: {self.url}"
+            ) from e
+
+        return info.title
 
     def playlist_urls(self) -> list[str]:
         """URLs of playlist entries (if playlist)."""
