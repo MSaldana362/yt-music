@@ -1,6 +1,9 @@
 from pathlib import Path
 from typing import Any
+import logging
 import yt_dlp
+
+logger = logging.getLogger(__name__)
 
 
 class YouTubeUrlException(Exception):
@@ -54,22 +57,32 @@ class YouTubeUrl:
 
         return self._info
 
+    def _download(
+        self, options: dict[str, Any], outpath: Path, max_retries: int
+    ) -> bool:
+        """Download a YouTube video with options."""
+
+        for attempt in range(max_retries):
+            logger.info("Attempt %d of %d", attempt, max_retries)
+
+            with yt_dlp.YoutubeDL(options) as ydl:
+                ydl.download([self.url])
+            if outpath.exists():
+                return True
+
+            logger.info("Attempt %d failed", attempt)
+
+        return False
+
     def download_to_mp3(
         self,
         dirpath: str | Path,
         filename: str,
         noplaylist: bool = False,
         ignoreerrors: bool = True,
+        max_retries: int = 3,
     ) -> bool:
-        """
-        Download a YouTube video as MP3.
-
-        Args:
-            dirpath (str): _description_
-            filename (str): _description_
-            noplaylist (bool, optional): _description_. Defaults to False.
-            ignoreerrors (bool, optional): _description_. Defaults to True.
-        """
+        """Download a YouTube video as MP3."""
 
         options = {
             **self.DEFAULT_OPTIONS,
@@ -86,11 +99,8 @@ class YouTubeUrl:
             "ignoreerrors": ignoreerrors,
         }
 
-        with yt_dlp.YoutubeDL(options) as ydl:
-            ydl.download([self.url])
-
         outpath = Path(dirpath) / f"{filename}.mp3"
-        return outpath.exists()
+        return self._download(options=options, outpath=outpath, max_retries=max_retries)
 
     def download_to_mp4(
         self,
@@ -99,17 +109,9 @@ class YouTubeUrl:
         height: int,
         noplaylist: bool = False,
         ignoreerrors: bool = True,
+        max_retries: int = 3,
     ) -> bool:
-        """
-        Download a YouTube video as MP4.
-
-        Args:
-            dirpath (str): _description_
-            filename (str): _description_
-            height (int): _description_
-            noplaylist (bool, optional): _description_. Defaults to False.
-            ignoreerrors (bool, optional): _description_. Defaults to True.
-        """
+        """Download a YouTube video as MP4."""
 
         options = {
             **self.DEFAULT_OPTIONS,
@@ -120,8 +122,5 @@ class YouTubeUrl:
             "ignoreerrors": ignoreerrors,
         }
 
-        with yt_dlp.YoutubeDL(options) as ydl:
-            ydl.download([self.url])
-
         outpath = Path(dirpath) / f"{filename}.mp4"
-        return outpath.exists()
+        return self._download(options=options, outpath=outpath, max_retries=max_retries)
