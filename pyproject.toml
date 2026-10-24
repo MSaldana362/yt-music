@@ -12,7 +12,7 @@ dependencies = [
     "pydantic>=2.14.1",
     "pyqt5>=5.15.11",
     "requests>=2.33.0",
-    "yt-dlp>=2026.8.19",
+    "yt-dlp>=2026.10.21",
 ]
 
 [build-system]
