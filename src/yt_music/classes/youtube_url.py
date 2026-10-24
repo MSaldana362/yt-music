@@ -2,6 +2,8 @@ from pathlib import Path
 from typing import Any
 import logging
 import yt_dlp
+from pydantic import ValidationError
+from yt_music.models.youtube_info import YouTubePlaylistInfo
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +58,28 @@ class YouTubeUrl:
             ) from e
 
         return self._info
+
+    def playlist_urls(self) -> list[str]:
+        """URLs of playlist entries (if playlist)."""
+
+        try:
+            info = YouTubePlaylistInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No entries found for URL: %s", self.url)
+            return []
+
+        return [entry.url for entry in info.entries]
+
+    def playlist_titles(self) -> list[str]:
+        """Titles of playlist entries (if playlist)."""
+
+        try:
+            info = YouTubePlaylistInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No entries found for URL: %s", self.url)
+            return []
+
+        return [entry.title for entry in info.entries]
 
     def _download(
         self, options: dict[str, Any], outpath: Path, max_retries: int
