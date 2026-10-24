@@ -56,7 +56,7 @@ class YouTubeUrl:
 
     def download_to_mp3(
         self,
-        dirpath: str,
+        dirpath: str | Path,
         filename: str,
         noplaylist: bool = False,
         ignoreerrors: bool = True,
@@ -94,7 +94,7 @@ class YouTubeUrl:
 
     def download_to_mp4(
         self,
-        dirpath: str,
+        dirpath: str | Path,
         filename: str,
         height: int,
         noplaylist: bool = False,
