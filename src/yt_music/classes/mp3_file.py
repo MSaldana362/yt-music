@@ -54,8 +54,8 @@ class Mp3File:
         """Parent directory of MP3 file."""
         return self.filepath.parent
 
-    def rename_to_expected(self) -> None:
-        """Rename MP3 file to expected format (`track_number` - `track_name`)."""
+    def rename_for_album(self) -> None:
+        """Rename file to expected format for album (`track_number` - `track_name`)."""
         track_name = self.audiofile.tag.title
         track_number = self.audiofile.tag.track_num[0]
 
@@ -66,6 +66,29 @@ class Mp3File:
 
         # todo: clean name
         expected = f"{track_number:02d} - {track_name}"
+        if self.filepath.stem == expected:
+            return
+
+        newpath = self.filepath.rename(self.filepath.with_stem(expected))
+        self.filepath = newpath.resolve()
+        self.audiofile = self._load_audio_file()
+
+        after = self.filepath.name
+
+        logger.info("Renamed '%s' to '%s'", before, after)
+
+    def rename_for_single(self) -> None:
+        """Rename file to expected format for single (`artist` - `track_name`)."""
+        artist = self.audiofile.tag.artist
+        track_name = self.audiofile.tag.title
+
+        if artist is None or track_name is None:
+            return
+
+        before = self.filepath.name
+
+        # todo: clean name
+        expected = f"{artist} - {track_name}"
         if self.filepath.stem == expected:
             return
 
