@@ -27,7 +27,7 @@ def downloader(
     youtube_url = YouTubeUrl(url)
     youtube_url.get_info()
 
-    playlist_urls = youtube_url.playlist_urls()
+    playlist_urls = youtube_url.playlist_urls
 
     if playlist_urls:
 
@@ -36,7 +36,7 @@ def downloader(
         dirpath = AlbumUtils.create_album_dir(artist, album, year)
 
         AlbumUtils.create_info_txt(
-            dirpath=dirpath, url=youtube_url.url, titles=youtube_url.playlist_titles()
+            dirpath=dirpath, url=youtube_url.url, titles=youtube_url.playlist_titles
         )
 
         # download album artwork
@@ -52,7 +52,7 @@ def downloader(
             entry_url = YouTubeUrl(entry)
             entry_url.get_info()
 
-            title = entry_url.title()
+            title = entry_url.title
 
             filename = title
             filepath = dirpath / f"{filename}.mp3"
@@ -91,7 +91,7 @@ def downloader(
 
         # download, apply metadata, and rename
 
-        title = youtube_url.title()
+        title = youtube_url.title
 
         filename = title
         filepath = dirpath / f"{filename}.mp3"

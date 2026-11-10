@@ -3,7 +3,11 @@ from typing import Any
 import logging
 import yt_dlp
 from pydantic import ValidationError
-from yt_music.models.youtube_info import YouTubeInfo, YouTubePlaylistInfo
+from yt_music.models.youtube_info import (
+    YouTubeInfo,
+    YouTubePlaylistInfo,
+    YouTubeMusicTrackInfo,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +63,7 @@ class YouTubeUrl:
 
         return self._info
 
+    @property
     def title(self) -> str:
         """Title of playlist or video."""
 
@@ -71,6 +76,7 @@ class YouTubeUrl:
 
         return info.title
 
+    @property
     def playlist_urls(self) -> list[str]:
         """URLs of playlist entries (if playlist)."""
 
@@ -82,6 +88,7 @@ class YouTubeUrl:
 
         return [entry.url for entry in info.entries]
 
+    @property
     def playlist_titles(self) -> list[str]:
         """Titles of playlist entries (if playlist)."""
 
@@ -92,6 +99,54 @@ class YouTubeUrl:
             return []
 
         return [entry.title for entry in info.entries]
+
+    @property
+    def album(self) -> str | None:
+        """Album from YouTube Music"""
+
+        try:
+            info = YouTubeMusicTrackInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No album found for URL: %s", self.url)
+            return None
+
+        return info.album
+
+    @property
+    def artists(self) -> list[str] | None:
+        """Artists from YouTube Music"""
+
+        try:
+            info = YouTubeMusicTrackInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No artists found for URL: %s", self.url)
+            return None
+
+        return info.artists
+
+    @property
+    def track(self) -> str | None:
+        """Track from YouTube Music"""
+
+        try:
+            info = YouTubeMusicTrackInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No track found for URL: %s", self.url)
+            return None
+
+        return info.track
+
+    @property
+    def release_year(self) -> int | None:
+        """Release Year from YouTube Music"""
+
+        try:
+            info = YouTubeMusicTrackInfo.model_validate(self._info)
+        except ValidationError:
+            logger.info("No release_year found for URL: %s", self.url)
+            return None
+
+        return info.release_year
 
     def _download(
         self, options: dict[str, Any], outpath: Path, max_retries: int
