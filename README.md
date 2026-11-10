@@ -38,3 +38,11 @@ YouTube Music has the album artwork, so I can right-click on the image and copy 
 ```
 poetry run python /yt-music-download/download_mp3.py "https://music.youtube.com/playlist?list=OLAK5uy_kAGXrLmhZUFjJV7mFVuuRh6wuUADku5Nc&feature=shared" "Tomoko Aran" " Shinkeisuijyaku" 1981 --artwork-url "https://lh3.googleusercontent.com/Rfze1ipyLQihWaEK7KqdCy_JFE37JgUxWpgWUYeEwnLWJzSVN_slsB4hA4lbDVbasDma71rdanPrsjTe=w544-h544-s-l90-rj"
 ```
+
+## Development
+
+### Python and Qt
+
+```
+uv run pyside6-uic mainwindow.ui - ui_mainwindow.py
+```
