@@ -5,7 +5,7 @@ Main application.
 import sys
 from PyQt5 import QtWidgets
 from download_mp3_ui import Ui_MainWindow
-from yt_music.download import download_mp3
+from yt_music.downloader import downloader
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -21,8 +21,8 @@ class MainWindow(QtWidgets.QMainWindow):
         Download video or playlist to MP3.
         """
 
-        youtube_url = self.ui.lineEditUrl.text()
-        if not youtube_url:
+        url = self.ui.lineEditUrl.text()
+        if not url:
             print("Please enter a valid YouTube url.")
             return
 
@@ -42,17 +42,17 @@ class MainWindow(QtWidgets.QMainWindow):
             print("Please enter a valid year.")
             return
 
-        artwork_url = self.ui.lineEditArtwork.text()
-        if not artwork_url:
-            artwork_url = None
+        art = self.ui.lineEditArtwork.text()
+        if not art:
+            art = None
 
         try:
-            download_mp3(
-                youtube_url=youtube_url,
+            downloader(
+                url=url,
                 artist=artist,
                 album=album,
                 year=year,
-                artwork_url=artwork_url,
+                art=art,
             )
             print("Download completed successfully. You may now close the window.")
         except RuntimeError:
