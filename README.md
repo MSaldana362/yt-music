@@ -44,7 +44,7 @@ poetry run python /yt-music-download/download_mp3.py "https://music.youtube.com/
 ### Python and Qt
 
 ```
-uv run pyside6-uic mainwindow.ui - ui_mainwindow.py
+uv run pyside6-uic mainwindow.ui -o ui_mainwindow.py
 ```
 
 ### Builds

@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QGridLayout, QHBoxLayout,
-    QLineEdit, QMainWindow, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QSpinBox, QStatusBar,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -49,14 +48,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.lineAlbum)
 
-        self.spinYear = QSpinBox(self.centralwidget)
-        self.spinYear.setObjectName(u"spinYear")
-        self.spinYear.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.PlusMinus)
-        self.spinYear.setMinimum(1000)
-        self.spinYear.setMaximum(9999)
-        self.spinYear.setValue(2000)
+        self.lineYear = QLineEdit(self.centralwidget)
+        self.lineYear.setObjectName(u"lineYear")
 
-        self.verticalLayout_2.addWidget(self.spinYear)
+        self.verticalLayout_2.addWidget(self.lineYear)
 
         self.lineArt = QLineEdit(self.centralwidget)
         self.lineArt.setObjectName(u"lineArt")
@@ -112,6 +107,7 @@ class Ui_MainWindow(object):
         self.lineUrl.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Playlist or Video URL", None))
         self.lineArtist.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Artist", None))
         self.lineAlbum.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Album", None))
+        self.lineYear.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Year", None))
         self.lineArt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"(Optional) Artwork URL", None))
         self.lineGenre.setPlaceholderText(QCoreApplication.translate("MainWindow", u"(Optional) Genre", None))
         self.pushDownload.setText(QCoreApplication.translate("MainWindow", u"Download", None))

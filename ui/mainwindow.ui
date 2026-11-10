@@ -44,18 +44,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinYear">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
-          </property>
-          <property name="minimum">
-           <number>1000</number>
-          </property>
-          <property name="maximum">
-           <number>9999</number>
-          </property>
-          <property name="value">
-           <number>2000</number>
+         <widget class="QLineEdit" name="lineYear">
+          <property name="placeholderText">
+           <string>Year</string>
           </property>
          </widget>
         </item>

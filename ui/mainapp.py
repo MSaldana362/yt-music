@@ -26,6 +26,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return False
         if not self.lineAlbum.text():
             return False
+        if not self.lineYear.text():
+            return False
 
         return True
 
@@ -38,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     url=self.lineUrl.text().strip(),
                     artist=self.lineArtist.text().strip(),
                     album=self.lineAlbum.text().strip(),
-                    year=self.spinYear.value(),
+                    year=int(self.lineYear.text().strip()),
                     art=self.lineArt.text().strip() or None,
                     genre=self.lineGenre.text().strip() or None,
                 )
