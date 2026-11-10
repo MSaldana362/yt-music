@@ -46,3 +46,9 @@ poetry run python /yt-music-download/download_mp3.py "https://music.youtube.com/
 ```
 uv run pyside6-uic mainwindow.ui - ui_mainwindow.py
 ```
+
+### Builds
+
+```
+uv run pyinstaller --noconsole --onefile main.py
+```
