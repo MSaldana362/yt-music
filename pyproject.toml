@@ -13,6 +13,7 @@ dependencies = [
     "pyside6>=6.12.0",
     "requests>=2.33.0",
     "yt-dlp>=2026.10.21",
+    "ytmusicapi>=1.12.3",
 ]
 
 [build-system]
