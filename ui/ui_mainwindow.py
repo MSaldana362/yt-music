@@ -33,10 +33,20 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.lineUrl = QLineEdit(self.centralwidget)
         self.lineUrl.setObjectName(u"lineUrl")
 
-        self.verticalLayout_2.addWidget(self.lineUrl)
+        self.horizontalLayout_2.addWidget(self.lineUrl)
+
+        self.pushOpenUrl = QPushButton(self.centralwidget)
+        self.pushOpenUrl.setObjectName(u"pushOpenUrl")
+
+        self.horizontalLayout_2.addWidget(self.pushOpenUrl)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
         self.lineArtist = QLineEdit(self.centralwidget)
         self.lineArtist.setObjectName(u"lineArtist")
@@ -69,18 +79,24 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.hSpacerLeft = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.pushSearch = QPushButton(self.centralwidget)
+        self.pushSearch.setObjectName(u"pushSearch")
 
-        self.horizontalLayout.addItem(self.hSpacerLeft)
+        self.horizontalLayout.addWidget(self.pushSearch)
+
+        self.pushClear = QPushButton(self.centralwidget)
+        self.pushClear.setObjectName(u"pushClear")
+
+        self.horizontalLayout.addWidget(self.pushClear)
+
+        self.hSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout.addItem(self.hSpacer)
 
         self.pushDownload = QPushButton(self.centralwidget)
         self.pushDownload.setObjectName(u"pushDownload")
 
         self.horizontalLayout.addWidget(self.pushDownload)
-
-        self.hSpacerRight = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout.addItem(self.hSpacerRight)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -91,7 +107,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 20))
+        self.menubar.setGeometry(QRect(0, 0, 800, 23))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -105,11 +121,14 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.lineUrl.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Playlist or Video URL", None))
+        self.pushOpenUrl.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.lineArtist.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Artist", None))
         self.lineAlbum.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Album", None))
         self.lineYear.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Year", None))
         self.lineArt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"(Optional) Artwork URL", None))
         self.lineGenre.setPlaceholderText(QCoreApplication.translate("MainWindow", u"(Optional) Genre", None))
+        self.pushSearch.setText(QCoreApplication.translate("MainWindow", u"Search YouTube Music", None))
+        self.pushClear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.pushDownload.setText(QCoreApplication.translate("MainWindow", u"Download", None))
     # retranslateUi
 

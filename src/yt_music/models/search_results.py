@@ -50,6 +50,10 @@ class SongSearchResult(SearchResult):
     video_id: str = Field(alias="videoId")
 
     @property
+    def album_str(self) -> str:
+        return self.album.name
+
+    @property
     def song_url(self) -> str:
         return f"https://music.youtube.com/watch?v={self.video_id}"
 
