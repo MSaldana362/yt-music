@@ -1,4 +1,6 @@
-from pydantic import BaseModel, Field
+from typing import Annotated, Literal
+
+from pydantic import BaseModel, Field, TypeAdapter
 
 
 class Thumbnail(BaseModel):
@@ -9,22 +11,51 @@ class Thumbnail(BaseModel):
 
 class ArtistReference(BaseModel):
     name: str
-    id: str
+    id: str | None = None
 
 
-class AlbumSearchResult(BaseModel):
+class AlbumReference(BaseModel):
+    name: str
+    id: str | None = None
+
+
+class SearchResult(BaseModel):
+    result_type: str = Field(alias="resultType")
     title: str
-    result_type: str = Field(alias="type")
-    playlist_id: str = Field(alias="playlistId")
-    year: str
+    year: str | None = None
     artists: list[ArtistReference]
-    browse_id: str = Field(alias="browseId")
     thumbnails: list[Thumbnail]
+
+    @property
+    def artists_str(self) -> str:
+        return " & ".join(artist.name for artist in self.artists)
+
+    @property
+    def artwork_url(self) -> str:
+        return self.thumbnails[-1].url
+
+
+class AlbumSearchResult(SearchResult):
+    result_type: Literal["album"] = Field(alias="resultType")
+    playlist_id: str = Field(alias="playlistId")
 
     @property
     def playlist_url(self) -> str:
         return f"https://music.youtube.com/playlist?list={self.playlist_id}"
 
+
+class SongSearchResult(SearchResult):
+    result_type: Literal["song"] = Field(alias="resultType")
+    album: AlbumReference
+    video_id: str = Field(alias="videoId")
+
     @property
-    def artwork_url(self) -> str:
-        return self.thumbnails[-1].url
+    def song_url(self) -> str:
+        return f"https://music.youtube.com/watch?v={self.video_id}"
+
+
+AnySearchResult = Annotated[
+    AlbumSearchResult | SongSearchResult, Field(discriminator="result_type")
+]
+
+search_adapter = TypeAdapter(AnySearchResult)
