@@ -50,5 +50,5 @@ uv run pyside6-uic mainwindow.ui -o ui_mainwindow.py
 ### Builds
 
 ```
-uv run pyinstaller --noconsole --onefile main.py
+uv run pyinstaller --noconsole --onefile --collect-data ytmusicapi  main.py
 ```
