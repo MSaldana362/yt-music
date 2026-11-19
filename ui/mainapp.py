@@ -2,13 +2,13 @@
 
 import sys
 
+from downloadworker import DownloadWorker
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QApplication, QDialog, QLineEdit, QMainWindow, QMessageBox
 from searchdialog import SearchDialog
 from ui_mainwindow import Ui_MainWindow
 
-from yt_music.downloader import downloader
 from yt_music.models.search_results import (
     AlbumSearchResult,
     SearchResult,
@@ -23,6 +23,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setWindowTitle("YouTube MP3 Downloader")
         self.resize(800, 400)
+
+        self.progressBar.hide()
 
         self.pushSearch.clicked.connect(self.handle_search_clicked)
         self.pushDownload.clicked.connect(self.handle_download_clicked)
@@ -66,32 +68,59 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not self.lineYear.text():
             return False
 
+        try:
+            int(self.lineYear.text().strip())
+        except ValueError:
+            return False
+
         return True
+
+    def _on_download_success(self):
+        QMessageBox.information(self, "Completed", "Download completed successfully.")
+
+    def _on_download_failure(self):
+        QMessageBox.warning(self, "Error", "Something went wrong. Please try again.")
+
+    def _on_download_started(self):
+        self.progressBar.show()
+        self.statusBar().showMessage("Download in Progress...")
+
+    def _on_download_finished(self):
+        self.statusBar().clearMessage()
+        self.progressBar.hide()
+
+        self.pushDownload.setEnabled(True)
+        self.pushSearch.setEnabled(True)
+        self.pushClear.setEnabled(True)
 
     def handle_download_clicked(self):
         """Downloader"""
 
-        if self._validate_required():
-            try:
-                downloader(
-                    url=self.lineUrl.text().strip(),
-                    artist=self.lineArtist.text().strip(),
-                    album=self.lineAlbum.text().strip(),
-                    year=int(self.lineYear.text().strip()),
-                    art=self.lineArt.text().strip() or None,
-                    genre=self.lineGenre.text().strip() or None,
-                )
-                QMessageBox.information(
-                    self, "Completed", "Download completed successfully."
-                )
-            except Exception:
-                QMessageBox.warning(
-                    self, "Error", "Something went wrong. Please try again."
-                )
-        else:
+        if not self._validate_required():
             QMessageBox.information(
                 self, "Missing Information", "Please enter required information."
             )
+            return
+
+        self.pushDownload.setEnabled(False)
+        self.pushSearch.setEnabled(False)
+        self.pushClear.setEnabled(False)
+
+        self.worker = DownloadWorker(
+            url=self.lineUrl.text().strip(),
+            artist=self.lineArtist.text().strip(),
+            album=self.lineAlbum.text().strip(),
+            year=int(self.lineYear.text().strip()),
+            art=self.lineArt.text().strip() or None,
+            genre=self.lineGenre.text().strip() or None,
+        )
+
+        self.worker.success.connect(self._on_download_success)
+        self.worker.failure.connect(self._on_download_failure)
+        self.worker.started.connect(self._on_download_started)
+        self.worker.finished.connect(self._on_download_finished)
+
+        self.worker.start()
 
     def handle_open_url_clicked(self):
         if self.lineUrl.text():
