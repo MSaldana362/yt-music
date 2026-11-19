@@ -1,0 +1,61 @@
+"""Album Utils"""
+
+from pathlib import Path
+
+
+class AlbumUtils:
+    """Utility class with static helper methods."""
+
+    def __init__(self):
+        raise TypeError("Utility class, cannot instantiate.")
+
+    @staticmethod
+    def create_album_dir(
+        artist: str,
+        album: str,
+        year: int,
+    ) -> Path:
+        """Create album directory in Downloads."""
+
+        parent = Path.home() / "Downloads"
+
+        dirname = f"{artist} - {album} ({year})"
+        dirpath = parent / dirname
+        if not dirpath.exists():
+            dirpath.mkdir()
+
+        return dirpath
+
+    @staticmethod
+    def create_info_txt(dirpath: str | Path, url: str, titles: list[str]) -> None:
+        """Create info TXT file."""
+
+        dirpath = Path(dirpath)
+        filepath = dirpath / "_info.txt"
+
+        lines = [dirpath.name, url, ""]
+
+        for index, title in enumerate(titles, start=1):
+            lines.append("\t".join([f"{index:02d}", title]))
+
+        filepath.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+class SingleUtils:
+    """Utility class with static helper methods."""
+
+    def __init__(self):
+        raise TypeError("Utility class, cannot instantiate.")
+
+    @staticmethod
+    def create_artist_dir(artist: str) -> Path:
+        """Create artist directory in Downloads"""
+
+        parent = Path.home() / "Downloads"
+
+        dirname = f"{artist}"
+        dirpath = parent / dirname
+        if not dirpath.exists():
+            dirpath.mkdir()
+
+        return dirpath
